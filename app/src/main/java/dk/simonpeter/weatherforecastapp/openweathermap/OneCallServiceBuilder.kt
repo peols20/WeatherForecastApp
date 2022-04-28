@@ -1,5 +1,6 @@
 package dk.weatherforecastapp.openweathermap
 
+import android.util.Log
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -12,6 +13,7 @@ class OneCallServiceBuilder {
     private var OneCallService: OneCallService = retrofit.create(dk.weatherforecastapp.openweathermap.OneCallService::class.java)
 
     fun getOneCallService(): OneCallService {
+        Log.i("hest", "Service build")
         return OneCallService
     }
 }

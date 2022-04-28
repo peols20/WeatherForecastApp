@@ -3,10 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="dk.weatherforecastapp.view.CurrentWeather">
-
-    //tools:context=".ui.weather.current.Current_weather"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--tools:context="dk.simonpeter.weatherforecastapp.view.CurrentWeather"-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -15,9 +13,8 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5"/>
 
-
     <TextView
-        android:id="@+id/textView_condition"
+        android:id="@+id/detail_condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

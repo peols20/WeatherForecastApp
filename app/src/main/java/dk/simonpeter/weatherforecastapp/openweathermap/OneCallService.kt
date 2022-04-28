@@ -8,8 +8,10 @@ import retrofit2.http.Query
 interface OneCallService {
     @GET("onecall")
     fun onecall(
-        @Query("lat") lat: String, @Query("lon") lon: String,
-        @Query("appid") appid: String, @Query("units") units: String = "metric"
+        @Query("lat") lat: String,
+        @Query("lon") lon: String,
+        @Query("appid") appid: String,
+        @Query("units") units: String = "metric"
     ):
             Call<OneCallResponse>
 }
