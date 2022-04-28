@@ -28,7 +28,7 @@ class DayList : Fragment() {
             dayListViewModel.updateSelectedDayWeatherData(position)
             Log.i("hest", "qwe2" + position)
 
-            val currentWeatherFragment = CurrentWeather()
+            val currentWeatherFragment = DetailWeather()
             val activity = view!!.context as AppCompatActivity
             activity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, currentWeatherFragment)
                 .addToBackStack(null).commit()

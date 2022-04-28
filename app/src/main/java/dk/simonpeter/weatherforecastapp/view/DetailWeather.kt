@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import dk.simonpeter.weatherforecastapp.R
 import dk.simonpeter.weatherforecastapp.viewmodel.DayListViewModel
@@ -14,13 +13,13 @@ import dk.weatherforecastapp.openweathermap.onecall.Daily
 import android.view.View
 import androidx.fragment.app.activityViewModels
 
-class CurrentWeather : Fragment() {
+class DetailWeather : Fragment() {
 /*
     private val adaptor = RecyclerAdapter()
 */
 
     companion object {
-        fun newInstance() = CurrentWeather()
+        fun newInstance() = DetailWeather()
     }
 
     private val dayListViewModel: DayListViewModel by activityViewModels()
@@ -31,7 +30,7 @@ class CurrentWeather : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.i("hest", "inflate")
-        return inflater.inflate(R.layout.current_weather_fragment, container, false)
+        return inflater.inflate(R.layout.detail_weather_fragment, container, false)
     }
 
     fun setWeatherData(daily: Daily) {
