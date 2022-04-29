@@ -1,14 +1,12 @@
 package dk.simonpeter.weatherforecastapp.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dk.simonpeter.weatherforecastapp.R
@@ -17,11 +15,7 @@ import dk.simonpeter.weatherforecastapp.viewmodel.DayListViewModel
 
 class DayList : Fragment() {
 
-    companion object {
-        fun newInstance() = DayList()
-    }
-
-    val icl: ItemClickListener = object : ItemClickListener {
+    private val icl: ItemClickListener = object : ItemClickListener {
         override fun onItemClick(position: Int) {
             dayListViewModel.updateSelectedDayWeatherData(position)
 
@@ -33,7 +27,7 @@ class DayList : Fragment() {
         }
     }
 
-    private lateinit var days_recyclerView: RecyclerView
+    private lateinit var daysRecyclerView: RecyclerView
     private var adaptor: RecyclerAdapter = RecyclerAdapter(icl)
     private val dayListViewModel: DayListViewModel by activityViewModels()
 
@@ -43,10 +37,10 @@ class DayList : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.day_list_fragment, container, false)
 
-        days_recyclerView = view.findViewById<RecyclerView>(R.id.days_recyclerView)
-        days_recyclerView.layoutManager = LinearLayoutManager(context)
+        daysRecyclerView = view.findViewById<RecyclerView>(R.id.days_recyclerView)
+        daysRecyclerView.layoutManager = LinearLayoutManager(context)
         //adaptor = RecyclerAdapter(context, icl)
-        days_recyclerView.adapter = adaptor
+        daysRecyclerView.adapter = adaptor
 
         return view
     }
@@ -54,9 +48,9 @@ class DayList : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        dayListViewModel.weatherData.observe(viewLifecycleOwner, Observer {
+        dayListViewModel.weatherData.observe(viewLifecycleOwner) {
             adaptor.setWeatherData(it)
-        })
+        }
     }
 
 }

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WeatherForecastApp</string>
+    <string name="feels_like">Feels like: %1$s° C</string>
+    <string name="temperature">%1$s° C</string>
+    <string name="wind">Wind: %1$s (%2$s) m/s - from %3$s</string>
+    <string name="precipitation">Precipitation: %1$smm (%2$s%%)</string>
 </resources>

@@ -1,10 +1,10 @@
 package dk.simonpeter.weatherforecastapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dk.simonpeter.weatherforecastapp.tools.Formatting
 import dk.weatherforecastapp.openweathermap.OneCallServiceBuilder
 import dk.weatherforecastapp.openweathermap.onecall.Daily
 import dk.weatherforecastapp.openweathermap.onecall.OneCallResponse
@@ -35,16 +35,16 @@ class DayListViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO){
             while(running) {
                 try {
-                    Log.i("hest", "Call WS")
                     val oneCall = WeatherService.onecall("55.4269", "10.4714","e3914f805149a337ef279793a4a34093")
                     val resp = oneCall.execute().body()
+
+                    Formatting.zone = resp!!.timezone;
 
                     _weatherData.postValue(resp!!) /// ToDo Der bør laves errorhandling i stedet for at bruge !!
                     // Suspend the coroutine for 60 seconds
                     delay(60000)
                 } catch (e: Exception) {
                     // ToDo Error handling / recovery / graceful termination
-                    Log.i("hest", "ERROR - Call WS")
                 }
             }
         }
