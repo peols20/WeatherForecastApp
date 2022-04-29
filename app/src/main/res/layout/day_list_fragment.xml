@@ -15,6 +15,6 @@
         android:layout_marginBottom="-2dp"
         tools:context=".view.DayList"
         tools:itemCount="17"
-        tools:listitem="@layout/item_layout"/>
+        tools:listitem="@layout/day_list_item_layout"/>
 
 </FrameLayout>
