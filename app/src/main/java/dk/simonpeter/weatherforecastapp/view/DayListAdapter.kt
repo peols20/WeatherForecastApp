@@ -61,7 +61,6 @@ class RecyclerAdapter(private val itemClickListener: ItemClickListener) : Recycl
         } catch (e: Exception)  {
             Log.e("", "OnBindViewHolder fejler: " + e.toString())
         }
-
     }
 
     override fun getItemCount(): Int {
