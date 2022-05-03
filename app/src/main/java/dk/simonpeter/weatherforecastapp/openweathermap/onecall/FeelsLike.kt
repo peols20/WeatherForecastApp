@@ -1,4 +1,4 @@
-package dk.weatherforecastapp.openweathermap.onecall
+package dk.simonnpeter.weatherforecastapp.openweathermap.onecall
 
 data class FeelsLike(
     val day: Double,

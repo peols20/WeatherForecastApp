@@ -1,6 +1,6 @@
-package dk.weatherforecastapp.openweathermap
+package dk.simonpeter.weatherforecastapp.openweathermap
 
-import dk.weatherforecastapp.openweathermap.onecall.OneCallResponse
+import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.OneCallResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

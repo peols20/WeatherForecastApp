@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import dk.simonpeter.weatherforecastapp.R
 import dk.simonpeter.weatherforecastapp.tools.Constants
 import dk.simonpeter.weatherforecastapp.tools.Formatting
-import dk.weatherforecastapp.openweathermap.onecall.OneCallResponse
+import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.OneCallResponse
 import kotlin.math.roundToInt
 
 
@@ -54,7 +54,7 @@ class RecyclerAdapter(private val itemClickListener: ItemClickListener) : Recycl
                 weatherData.daily[position].temp.day.roundToInt().toString())
             val icon: String = weatherData.daily[position].weather[0].icon
             Glide.with(context)
-                .load(Constants.iconUrl + icon + Constants.iconExtension)
+                .load(Constants.openweatherIconUrl + icon + Constants.openweathermapIconExtension)
                 .override(200, 200)
                 .into(holder.itemPicture)
 

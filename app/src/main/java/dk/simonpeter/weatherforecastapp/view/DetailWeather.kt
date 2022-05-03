@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import dk.simonpeter.weatherforecastapp.R
 import dk.simonpeter.weatherforecastapp.viewmodel.DayListViewModel
-import dk.weatherforecastapp.openweathermap.onecall.Daily
+import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.Daily
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
@@ -17,17 +17,11 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import dk.simonpeter.weatherforecastapp.tools.Constants
 import dk.simonpeter.weatherforecastapp.tools.Formatting
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 class DetailWeather : Fragment() {
-/*
-    private val adaptor = RecyclerAdapter()
-*/
-/*
-    companion object {
-        fun newInstance() = DetailWeather()
-    }
-*/
+
     private val dayListViewModel: DayListViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -46,7 +40,7 @@ class DetailWeather : Fragment() {
         val iconPic = view?.findViewById(R.id.detail_condition_icon) as ImageView
         val icon: String = daily.weather[0].icon
         Glide.with(this)
-            .load(Constants.iconUrl + icon + Constants.iconExtension)
+            .load(Constants.openweatherIconUrl + icon + Constants.openweathermapIconExtension)
             .override(200, 200)
             .into(iconPic)
 
@@ -64,18 +58,13 @@ class DetailWeather : Fragment() {
 
         val precipitation = view?.findViewById(R.id.detail_precipitation) as TextView
         precipitation.text = getString(R.string.precipitation,
-                daily.rain.roundToInt().toString(),
-                (daily.pop*100).toInt().toString())
-
-
+            ceil(daily.rain).toInt().toString(),
+            (daily.pop*100).toInt().toString())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProvider(this).get(DayListViewModel::class.java)
-
-
 
         dayListViewModel.selectedDayWeatherData.observe(viewLifecycleOwner, Observer {
             setWeatherData(it)

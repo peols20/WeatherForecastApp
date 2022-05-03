@@ -17,7 +17,9 @@
         android:layout_marginStart="40dp"
         android:hint="@string/edittext_search_city"
         android:inputType="text"
-        android:textAlignment="center"
+        android:imeOptions="actionSearch"
+
+    android:textAlignment="center"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
