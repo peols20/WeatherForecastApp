@@ -2,16 +2,18 @@ package dk.simonpeter.weatherforecastapp.view
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import dk.simonpeter.weatherforecastapp.R
 import dk.simonpeter.weatherforecastapp.openweathermap.geo.GeoResponse
 import dk.simonpeter.weatherforecastapp.viewmodel.SearchCityViewModel
+
 
 class SearchCity : Fragment() {
 
@@ -76,6 +78,8 @@ class SearchCity : Fragment() {
 
             Log.i("menu", "lat: " + lat + ", lon: " + lon)
             //Todo Save seachItem, lat, lon to DB
+
+            (activity as AppCompatActivity?)!!.supportActionBar?.title = resp.get(0).name
 
             parentFragmentManager.popBackStack()
 
