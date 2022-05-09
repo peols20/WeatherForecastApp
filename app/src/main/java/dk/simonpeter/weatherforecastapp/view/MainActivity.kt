@@ -5,10 +5,16 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import dk.simonpeter.weatherforecastapp.R
+import dk.simonpeter.weatherforecastapp.viewmodel.DayListViewModel
 
 class MainActivity : AppCompatActivity() {
+
+
+    private val dayListViewModel: DayListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +25,10 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction()
             .add(R.id.fragment_container, DayList())
             .commit()
+        }
+
+        dayListViewModel.citynameData.observe( this) {
+            setCityname(it)
         }
     }
 
@@ -45,5 +55,9 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null).commit()
     }
 
+    private fun setCityname(cityName: String) {
+        this.supportActionBar?.title = cityName
+
+    }
 }
 

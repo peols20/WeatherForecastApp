@@ -6,4 +6,7 @@ object Constants {
     val openweathermapGeoUrl = "https://api.openweathermap.org/geo/1.0/"
     val openweatherIconUrl = "https://openweathermap.org/img/w/"
     val openweathermapIconExtension = ".png"
+    val lat = "55.4269"
+    val lon = "10.4714"
+    val cityName = "Odense"
 }

@@ -1,5 +1,6 @@
 package dk.simonpeter.weatherforecastapp.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,8 +11,13 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.room.Room
 import dk.simonpeter.weatherforecastapp.R
+import dk.simonpeter.weatherforecastapp.data.AppDatabase
+import dk.simonpeter.weatherforecastapp.data.Coordinates
 import dk.simonpeter.weatherforecastapp.openweathermap.geo.GeoResponse
+import dk.simonpeter.weatherforecastapp.viewmodel.DayListViewModel
 import dk.simonpeter.weatherforecastapp.viewmodel.SearchCityViewModel
 
 
@@ -23,8 +29,11 @@ class SearchCity : Fragment() {
     // og hvis data ellers er valide, "pop'es" fragmentet fra stack'en med det samme inden fragmentet bliver vist.
     // Det er måske ikke den rigtige måde at gøre det på, men ...
 
+    private val dayListViewModel: DayListViewModel by activityViewModels()
+
 
     private lateinit var editText: EditText
+    private lateinit var appContext: Context
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +44,7 @@ class SearchCity : Fragment() {
         val searchButton = view.findViewById<Button>(R.id.search_button)
         editText = view.findViewById(R.id.change_city)
         editText.requestFocus()
+        appContext = container!!.context
 
         searchButton.setOnClickListener {
             searchButtonClicked()
@@ -75,11 +85,13 @@ class SearchCity : Fragment() {
         if (resp.size > 0) {
             val lat = resp.get(0).lat
             val lon = resp.get(0).lon
+            val name = resp.get(0).name
 
             Log.i("menu", "lat: " + lat + ", lon: " + lon)
-            //Todo Save seachItem, lat, lon to DB
+            dayListViewModel.writeCoordinates(lat, lon, name)
 
-            (activity as AppCompatActivity?)!!.supportActionBar?.title = resp.get(0).name
+
+
 
             parentFragmentManager.popBackStack()
 

@@ -6,16 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-private const val DATABASE = "user_table"
+private const val DATABASE = "Coordinates"
 
 @Database(
-    entities = [User::class],
+    entities = [Coordinates::class],
     version = 1,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun userDao(): UserDao
+    abstract fun CoordinatesDao(): CoordinatesDao
 
     //code below courtesy of https://github.com/googlesamples/android-sunflower; it     is open
     //source just like this application.

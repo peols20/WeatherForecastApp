@@ -1,13 +1,16 @@
 package dk.simonpeter.weatherforecastapp.viewmodel
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.*
+import androidx.room.Room
 import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.Daily
 import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.OneCallResponse
+import dk.simonpeter.weatherforecastapp.data.AppDatabase
+import dk.simonpeter.weatherforecastapp.data.Coordinates
+import dk.simonpeter.weatherforecastapp.data.CoordinatesDao
 import dk.simonpeter.weatherforecastapp.tools.Formatting
 import dk.simonpeter.weatherforecastapp.openweathermap.OpenWeatherMapServiceBuilder
 import dk.simonpeter.weatherforecastapp.tools.Constants
@@ -16,10 +19,18 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class DayListViewModel : ViewModel() {
+class DayListViewModel(application: Application) : AndroidViewModel(application) {
     @Volatile
     private var running = true
     private val WeatherService = OpenWeatherMapServiceBuilder().getOneCallService()
+    private var coordinatesDao = AppDatabase.getInstance(application).CoordinatesDao()
+    private var appl = application
+
+    private var coordinateData: Coordinates = Coordinates(0, Constants.cityName, Constants.lat, Constants.lon)
+
+    private val _citynameData = MutableLiveData<String>()
+    val citynameData: LiveData<String>
+        get() = _citynameData
 
     private val _weatherData = MutableLiveData<OneCallResponse>()
     val weatherData: LiveData<OneCallResponse>
@@ -30,16 +41,39 @@ class DayListViewModel : ViewModel() {
         get() = _selectedDayWeatherData
 
     init {
-        updateWeather()
+
+        //fetchCoordinates()
+        updateWeather(true)
     }
 
-    fun updateWeather() {
+    fun writeCoordinates(lat: Double,lon: Double,cityName: String){
+        _citynameData.postValue(cityName)
+        coordinateData = Coordinates(0, cityName, lat.toString(), lon.toString())
+        viewModelScope.launch(Dispatchers.IO) {
+            if(coordinatesDao.getCount() == 0) {
+                val write = coordinatesDao.insertAll(coordinateData)
+            }
+            else {
+                val write = coordinatesDao.updateAll(coordinateData)
+            }
+        }
+        Log.i("hejsa", "3 "+coordinateData.lat)
+        updateWeather(false)
+    }
+
+    fun updateWeather(fetchInDb: Boolean) {
         // Launch coroutine in viewModelScope
         viewModelScope.launch(Dispatchers.IO){
             while(running) {
-                val lat = "55.4269" //ToDo hent i DB
-                val lon = "10.4714" //ToDo hent i DB
-                val oneCall = WeatherService.onecall(lat, lon, Constants.openweathermapAppId)
+                if(fetchInDb) {
+                    if (coordinatesDao.getCount() == 0) {
+                    } else {
+                        coordinateData = coordinatesDao.getCoordinates()[0]
+                    }
+                }
+                Log.i("hejsa", ""+coordinateData.lat)
+                _citynameData.postValue(coordinateData.city)
+                val oneCall = WeatherService.onecall(coordinateData.lat, coordinateData.lon, Constants.openweathermapAppId)
                 val resp = oneCall.execute().body()
 
                 if (resp != null) {
@@ -56,6 +90,7 @@ class DayListViewModel : ViewModel() {
                 }
             }
         }
+        running = true;
     }
 
     fun updateSelectedDayWeatherData(position: Int) {
