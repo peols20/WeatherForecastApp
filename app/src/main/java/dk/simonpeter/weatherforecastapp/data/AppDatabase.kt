@@ -10,7 +10,7 @@ private const val DATABASE = "Coordinates"
 
 @Database(
     entities = [Coordinates::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -34,6 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE)
+                .fallbackToDestructiveMigration()
                 .build()
         }
     }

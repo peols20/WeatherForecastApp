@@ -1,16 +1,12 @@
 package dk.simonpeter.weatherforecastapp.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
-import androidx.room.Room
 import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.Daily
 import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.OneCallResponse
 import dk.simonpeter.weatherforecastapp.data.AppDatabase
 import dk.simonpeter.weatherforecastapp.data.Coordinates
-import dk.simonpeter.weatherforecastapp.data.CoordinatesDao
 import dk.simonpeter.weatherforecastapp.tools.Formatting
 import dk.simonpeter.weatherforecastapp.openweathermap.OpenWeatherMapServiceBuilder
 import dk.simonpeter.weatherforecastapp.tools.Constants
@@ -26,7 +22,10 @@ class DayListViewModel(application: Application) : AndroidViewModel(application)
     private var coordinatesDao = AppDatabase.getInstance(application).CoordinatesDao()
     private var appl = application
 
-    private var coordinateData: Coordinates = Coordinates(0, Constants.cityName, Constants.lat, Constants.lon)
+    private var coordinateData: Coordinates = Coordinates(0,
+                                                            Constants.initCityName,
+                                                            Constants.initLatitude,
+                                                            Constants.initLongitude)
 
     private val _citynameData = MutableLiveData<String>()
     val citynameData: LiveData<String>
@@ -51,13 +50,14 @@ class DayListViewModel(application: Application) : AndroidViewModel(application)
         coordinateData = Coordinates(0, cityName, lat.toString(), lon.toString())
         viewModelScope.launch(Dispatchers.IO) {
             if(coordinatesDao.getCount() == 0) {
+                Log.i("hest", "insert ")
                 val write = coordinatesDao.insertAll(coordinateData)
             }
             else {
+                Log.i("hest", "update ")
                 val write = coordinatesDao.updateAll(coordinateData)
             }
         }
-        Log.i("hejsa", "3 "+coordinateData.lat)
         updateWeather(false)
     }
 
@@ -71,18 +71,14 @@ class DayListViewModel(application: Application) : AndroidViewModel(application)
                         coordinateData = coordinatesDao.getCoordinates()[0]
                     }
                 }
-                Log.i("hejsa", ""+coordinateData.lat)
                 _citynameData.postValue(coordinateData.city)
                 val oneCall = WeatherService.onecall(coordinateData.lat, coordinateData.lon, Constants.openweathermapAppId)
                 val resp = oneCall.execute().body()
 
                 if (resp != null) {
                     Formatting.zone = resp.timezone;
-
                     _weatherData.postValue(resp!!)
-
                     updateSelectedDayWeatherData(0)
-
                     running = false;
                 } else {
                     // Suspend the coroutine for a seconds and try again

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "Coordinates")
 data class Coordinates (
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     var uid: Int,
 
