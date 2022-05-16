@@ -1,4 +1,4 @@
-package dk.simonpeter.weatherforecastapp.data
+package dk.simonpeter.weatherforecastapp.database
 
 import androidx.room.*
 

@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.*
 import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.Daily
 import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.OneCallResponse
-import dk.simonpeter.weatherforecastapp.data.AppDatabase
-import dk.simonpeter.weatherforecastapp.data.Coordinates
+import dk.simonpeter.weatherforecastapp.database.AppDatabase
+import dk.simonpeter.weatherforecastapp.database.Coordinates
 import dk.simonpeter.weatherforecastapp.tools.Formatting
 import dk.simonpeter.weatherforecastapp.openweathermap.OpenWeatherMapServiceBuilder
 import dk.simonpeter.weatherforecastapp.tools.Constants
@@ -70,17 +70,17 @@ class DayListViewModel(application: Application) : AndroidViewModel(application)
                 val resp = oneCall.execute().body()
 
                 if (resp != null) {
-                    Formatting.zone = resp.timezone;
+                    Formatting.zone = resp.timezone
                     _weatherData.postValue(resp!!)
                     updateSelectedDayWeatherData(0)
-                    running = false;
+                    running = false
                 } else {
                     // Suspend the coroutine for a seconds and try again
                     delay(1000)
                 }
             }
         }
-        running = true;
+        running = true
     }
 
     fun updateSelectedDayWeatherData(position: Int) {
