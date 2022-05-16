@@ -39,7 +39,6 @@ class DayList : Fragment() {
 
         daysRecyclerView = view.findViewById<RecyclerView>(R.id.days_recyclerView)
         daysRecyclerView.layoutManager = LinearLayoutManager(context)
-        //adaptor = RecyclerAdapter(context, icl)
         daysRecyclerView.adapter = adaptor
 
         return view

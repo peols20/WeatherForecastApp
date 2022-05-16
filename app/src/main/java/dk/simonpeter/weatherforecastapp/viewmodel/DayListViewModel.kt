@@ -1,7 +1,6 @@
 package dk.simonpeter.weatherforecastapp.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.Daily
 import dk.simonnpeter.weatherforecastapp.openweathermap.onecall.OneCallResponse
@@ -20,8 +19,6 @@ class DayListViewModel(application: Application) : AndroidViewModel(application)
     private var running = true
     private val WeatherService = OpenWeatherMapServiceBuilder().getOneCallService()
     private var coordinatesDao = AppDatabase.getInstance(application).CoordinatesDao()
-    private var appl = application
-
     private var coordinateData: Coordinates = Coordinates(0,
                                                             Constants.initCityName,
                                                             Constants.initLatitude,
@@ -41,7 +38,6 @@ class DayListViewModel(application: Application) : AndroidViewModel(application)
 
     init {
 
-        //fetchCoordinates()
         updateWeather(true)
     }
 
@@ -50,11 +46,9 @@ class DayListViewModel(application: Application) : AndroidViewModel(application)
         coordinateData = Coordinates(0, cityName, lat.toString(), lon.toString())
         viewModelScope.launch(Dispatchers.IO) {
             if(coordinatesDao.getCount() == 0) {
-                Log.i("hest", "insert ")
                 val write = coordinatesDao.insertAll(coordinateData)
             }
             else {
-                Log.i("hest", "update ")
                 val write = coordinatesDao.updateAll(coordinateData)
             }
         }
